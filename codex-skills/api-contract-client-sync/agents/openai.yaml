@@ -1,0 +1,4 @@
+interface:
+  display_name: "API Contract Client Sync"
+  short_description: "Keep APIs and clients aligned safely"
+  default_prompt: "Use $api-contract-client-sync to evolve an API contract and keep backend and clients aligned."

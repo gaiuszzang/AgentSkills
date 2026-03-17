@@ -1,0 +1,4 @@
+interface:
+  display_name: "KMP Shared Module Design"
+  short_description: "Shared KMP modules with platform seams"
+  default_prompt: "Use $kmp-shared-module-design to design or refactor a Kotlin Multiplatform shared module."
