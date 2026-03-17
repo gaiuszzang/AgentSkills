@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kotlin Android Clean Feature"
+  short_description: "Android feature work with clean boundaries"
+  default_prompt: "Use $kotlin-android-clean-feature to implement or refactor an Android Kotlin feature with clean architecture."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Node Backend Clean Service"
+  short_description: "Node backend design around use cases"
+  default_prompt: "Use $node-backend-clean-service to build or refactor a Node.js backend service with clean architecture."

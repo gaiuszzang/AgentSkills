@@ -1,0 +1,4 @@
+interface:
+  display_name: "Node Frontend Feature Architecture"
+  short_description: "Web frontend features with module clarity"
+  default_prompt: "Use $node-frontend-feature-architecture to implement or refactor a Node.js-based frontend feature cleanly."

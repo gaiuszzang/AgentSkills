@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+
+set -u
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" && pwd)"
+
+CODEX_SOURCE_ROOT="${SCRIPT_DIR}/codex-skills"
+CODEX_DEST_ROOT="${HOME}/.codex/skills"
+
+CLAUDE_SOURCE_ROOT="${SCRIPT_DIR}/claude-skills"
+CLAUDE_DEST_ROOT="${HOME}/.claude/skills"
+
+GEMINI_SOURCE_ROOT="${SCRIPT_DIR}/gemini-skills"
+GEMINI_DEST_ROOT="${HOME}/.gemini/skills"
+
+print_help() {
+  cat <<EOF
+Usage:
+  $(basename "$0") install [codex|claude|gemini|all]
+  $(basename "$0") help
+
+Commands:
+  install          Install skills (default: all)
+    codex          Copy codex-skills/ into ~/.codex/skills/
+    claude         Copy claude-skills/ into ~/.claude/skills/
+    gemini         Copy gemini-skills/ into ~/.gemini/skills/
+    all            Install codex, claude, and gemini skills
+  help             Show this help message
+EOF
+}
+
+confirm_replace() {
+  local target_name="$1"
+  local source_path="$2"
+  local dest_path="$3"
+  local answer
+
+  printf "Destination already exists for '%s'.\n" "$target_name"
+  printf "  source: %s\n" "$source_path"
+  printf "  target: %s\n" "$dest_path"
+  read -r -p "Remove and reinstall? [y/N] " answer
+
+  case "$answer" in
+    y|Y|yes|YES)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+install_skills_from() {
+  local source_root="$1"
+  local dest_root="$2"
+  local label="$3"
+  local source_dir
+  local skill_name
+  local dest_path
+  local installed=0
+  local skipped=0
+  local found=0
+
+  if [[ ! -d "$source_root" ]]; then
+    printf "Source directory not found: %s\n" "$source_root" >&2
+    return 1
+  fi
+
+  mkdir -p "$dest_root"
+
+  printf "Installing %s skills: %s -> %s\n" "$label" "$source_root" "$dest_root"
+
+  for source_dir in "$source_root"/*; do
+    if [[ ! -d "$source_dir" ]]; then
+      continue
+    fi
+
+    found=1
+    skill_name="$(basename "$source_dir")"
+    dest_path="${dest_root}/${skill_name}"
+
+    if [[ -e "$dest_path" || -L "$dest_path" ]]; then
+      if confirm_replace "$skill_name" "$source_dir" "$dest_path"; then
+        rm -rf -- "$dest_path"
+      else
+        printf "Skipped: %s\n" "$skill_name"
+        skipped=$((skipped + 1))
+        continue
+      fi
+    fi
+
+    cp -R "$source_dir" "$dest_path"
+    printf "Copied: %s -> %s\n" "$source_dir" "$dest_path"
+    installed=$((installed + 1))
+  done
+
+  if [[ "$found" -eq 0 ]]; then
+    printf "No skill directories found under %s\n" "$source_root"
+    return 1
+  fi
+
+  printf "Done (%s). installed=%d skipped=%d\n\n" "$label" "$installed" "$skipped"
+}
+
+main() {
+  local command="${1:-help}"
+  local target="${2:-all}"
+
+  case "$command" in
+    install)
+      case "$target" in
+        codex)
+          install_skills_from "$CODEX_SOURCE_ROOT" "$CODEX_DEST_ROOT" "Codex"
+          ;;
+        claude)
+          install_skills_from "$CLAUDE_SOURCE_ROOT" "$CLAUDE_DEST_ROOT" "Claude Code"
+          ;;
+        gemini)
+          install_skills_from "$GEMINI_SOURCE_ROOT" "$GEMINI_DEST_ROOT" "Gemini CLI"
+          ;;
+        all)
+          install_skills_from "$CODEX_SOURCE_ROOT" "$CODEX_DEST_ROOT" "Codex"
+          install_skills_from "$CLAUDE_SOURCE_ROOT" "$CLAUDE_DEST_ROOT" "Claude Code"
+          install_skills_from "$GEMINI_SOURCE_ROOT" "$GEMINI_DEST_ROOT" "Gemini CLI"
+          ;;
+        *)
+          printf "Unknown target: %s (expected: codex, claude, gemini, all)\n\n" "$target" >&2
+          print_help >&2
+          return 1
+          ;;
+      esac
+      ;;
+    help|-h|--help)
+      print_help
+      ;;
+    *)
+      printf "Unknown command: %s\n\n" "$command" >&2
+      print_help >&2
+      return 1
+      ;;
+  esac
+}
+
+main "$@"
