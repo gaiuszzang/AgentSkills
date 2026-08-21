@@ -1,6 +1,6 @@
 ---
 name: node-frontend-feature-architecture
-description: Implement and refactor Node.js-based frontend features with clear feature boundaries, server and client responsibilities, UI state discipline, and maintainable data flows. Use when Claude Code edits React, Next.js, Remix, Vite, or similar frontend codebases for page flows, forms, data fetching, component organization, or frontend architectural cleanup.
+description: Implement and refactor TypeScript or JavaScript web frontend features with clear feature boundaries, server/client responsibilities, UI state discipline, and maintainable data flows. Use when Claude Code edits React, Next.js, Remix, Vite, or similar frontend codebases for page flows, forms, data fetching, caching, or architectural cleanup.
 ---
 
 # Node Frontend Feature Architecture
@@ -23,12 +23,17 @@ Convert raw API or database shapes into view models or feature models so renderi
 4. Keep side effects and async states deliberate.
 Model loading, success, empty, error, and optimistic transitions explicitly. Avoid spreading fetch calls and mutation handling across arbitrary components.
 
+5. Define ownership of server, URL, and local state.
+Keep authoritative server data in the framework's query or route data layer, navigable state in the URL when appropriate, and ephemeral interaction state near the component that owns it. Make cache invalidation and mutation reconciliation explicit instead of copying the same data into multiple stores.
+
 ## Module Rules
 
 - Prefer feature folders or route-local modules before promoting code to global shared space.
 - Keep form schemas, validation, and submission orchestration near the feature that owns them.
 - Keep design-system components dumb and composable; keep business rules out of them.
 - Distinguish server-only code, client-only code, and shared utilities clearly in frameworks that support both.
+- Keep browser globals and environment-specific APIs behind the correct client boundary; avoid hydration-dependent rendering differences.
+- Preserve semantic HTML, keyboard operation, focus restoration, and accessible loading or error feedback through async transitions.
 
 ## Output Shape
 
@@ -40,4 +45,5 @@ Model loading, success, empty, error, and optimistic transitions explicitly. Avo
 
 - Verify that rendering code no longer depends on raw backend response noise.
 - Verify that async states are explicit and recoverable.
+- Verify mutations invalidate or reconcile every affected cache and that server/client rendering produces compatible initial output.
 - Verify that shared components or hooks were extracted because of repeated need, not guesswork.

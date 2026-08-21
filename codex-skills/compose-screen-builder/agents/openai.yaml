@@ -1,4 +1,4 @@
 interface:
   display_name: "Compose Screen Builder"
-  short_description: "Compose UI work with state discipline"
-  default_prompt: "Use $compose-screen-builder to build or refactor a Jetpack Compose screen with solid state handling."
+  short_description: "Android and multiplatform Compose UI"
+  default_prompt: "Use $compose-screen-builder to build or refactor a Jetpack Compose or Compose Multiplatform screen with explicit state and platform-aware boundaries."

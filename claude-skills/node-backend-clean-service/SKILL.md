@@ -26,12 +26,16 @@ Hide ORM, SQL, cache, messaging, and third-party SDK details behind adapters tha
 5. Make transactions and idempotency explicit.
 When multiple writes or side effects occur, show the unit of work clearly and define retry behavior deliberately.
 
+6. Make runtime behavior operationally safe.
+Carry deadlines or cancellation through long-running I/O when the stack supports it. Keep CPU-heavy or synchronous blocking work off latency-sensitive request paths, and attach structured logs, metrics, or traces at use-case and adapter boundaries without leaking observability concerns into domain rules.
+
 ## Module Rules
 
 - Organize by feature or use case cluster before organizing by technical layer.
 - Keep domain errors and application errors distinct from raw transport errors.
 - Prefer composition roots and dependency factories over implicit singleton wiring.
 - Do not return ORM entities directly from application logic unless the codebase already treats them as domain models.
+- Keep environment parsing and process startup validation at the composition root. Do not let feature code read mutable process globals as hidden dependencies.
 
 ## Output Shape
 
@@ -43,4 +47,5 @@ When multiple writes or side effects occur, show the unit of work clearly and de
 
 - Verify that framework code depends inward, not the reverse.
 - Verify that validation, authorization, and persistence concerns remain visible and testable.
+- Verify timeouts, cancellation, retries, and shutdown behavior for changed external I/O or background work.
 - Verify that new abstractions remove accidental coupling instead of hiding simple logic.

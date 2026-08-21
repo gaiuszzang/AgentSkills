@@ -1,0 +1,4 @@
+interface:
+  display_name: "Node Library SDK Publisher"
+  short_description: "Publish stable Node and TypeScript packages"
+  default_prompt: "Use $node-library-sdk-publisher to design, package, validate, and publish a Node.js or TypeScript library SDK safely."

@@ -1,6 +1,6 @@
 ---
 name: clean-architecture-reviewer
-description: Review and improve codebases around clean architecture principles such as dependency direction, module boundaries, entity and use-case separation, ports and adapters, and test seams across Kotlin, Android, KMP, Node.js backend, and web frontend code. Use when Claude Code is asked to perform architecture review, identify layer leaks, propose refactors, or judge whether a design change respects clean boundaries.
+description: Review codebases for dependency direction, module boundaries, ports and adapters, and test seams across Kotlin, Android, KMP/CMP, native iOS, Node.js backend, and web frontend code. Use when Claude Code is asked for an architecture review, layer-leak findings, refactor direction, or a judgment about clean boundaries.
 ---
 
 # Clean Architecture Reviewer

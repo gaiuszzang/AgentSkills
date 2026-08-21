@@ -1,6 +1,6 @@
 ---
 name: api-contract-client-sync
-description: Define, evolve, and synchronize API contracts, DTO mappings, and error models across Node.js backends, Android or KMP clients, and web frontends. Use when Claude Code changes request or response shapes, aligns backend and client models, plans backward-compatible API evolution, or prevents contract drift between services and consumers.
+description: Define, evolve, and synchronize API contracts, DTO mappings, and error models across Node.js backends, Android, KMP, native iOS, and web clients. Use when Claude Code changes request or response shapes, aligns producer and consumer models, plans backward-compatible evolution, or prevents contract drift.
 ---
 
 # API Contract Client Sync

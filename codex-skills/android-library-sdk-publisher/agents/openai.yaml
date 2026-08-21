@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Library SDK Publisher"
+  short_description: "Build and publish stable Android SDKs"
+  default_prompt: "Use $android-library-sdk-publisher to design, validate, and publish an Android AAR or Kotlin library SDK with a stable consumer API."

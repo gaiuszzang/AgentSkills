@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS SwiftUI Clean Feature"
+  short_description: "Native iOS features with clear boundaries"
+  default_prompt: "Use $ios-swiftui-clean-feature to implement or refactor a native iOS SwiftUI feature with clean state, concurrency, navigation, and tests."
